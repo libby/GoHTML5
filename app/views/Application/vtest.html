@@ -1,0 +1,46 @@
+#{extends 'main.html' /}
+#{set title:'Video tag test' /}
+#{set 'moreScripts'}
+ #{get 'moreScripts' /}
+    <script src="@{'/p/js/modernizr.js'}"></script>
+#{/set}
+
+#{set 'inlineScripts'}
+	#{get 'inlineScripts' /}
+<script>
+     $(function () {
+        var html5Support = function () {
+             if (window.Modernizr.canvas) {
+                 console.debug('browser supports HTML5')
+                 return true;
+             } else {
+                 return false;
+             }
+         }
+//      or simply
+//    if (Modernizr.canvastext) {
+//           // let's draw some text!
+//         } else {
+//           // no native canvas text support available :(
+//         }
+
+        function supports_canvas_text() {
+          if (!html5Support) { return false; }
+          var dummy_canvas = document.createElement('canvas');
+          var context = dummy_canvas.getContext('2d');
+          return typeof context.fillText == 'function';
+        }
+
+        var createCanvas = function() {
+            console.debug(supports_canvas_text());
+            var dummyCanvas = document.createElement('canvas');
+            var context = dummyCanvas.getContext('2d');
+        }
+
+    })
+</script>
+#{/set}
+
+        <div id="container">
+            canvas test
+        </div>

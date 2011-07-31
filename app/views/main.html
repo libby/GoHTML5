@@ -1,0 +1,40 @@
+    <!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>#{get 'title' /}</title>
+		<link rel="stylesheet" href="http://f.fontdeck.com/s/css/cnYyYEUhyVNBko4SdM/uypD513I/getgush.com/8097.css">
+		<link rel="stylesheet" href="@{'/p/css/main.css'}">
+		#{get 'moreStyles' /}
+		<!--{favicon /}-->
+
+	</head>
+	<body class="#{get 'bodyclass'/}">
+
+	<div id="header">
+		<div id="logo">
+            <!--<img src="{'/p/img/logo/gush_whitelogo5.png'}"/></a>-->
+        </div>
+        <div id="navLinks">
+
+		</div>
+	</div>
+	#{doLayout /}
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	<script>
+		/* Google CDN failover */
+		if (! window.jQuery) {
+			// jQuery was not loaded from Google CDN, serve local copy
+			var e = document.createElement("script")
+			e.src = "{'/p/js/jquery-1.6.2.js'}"
+			document.body.appendChild(e)
+		}
+	</script>
+	<script src="{'/p/js/utils.js'}"></script>
+	#{get 'moreScripts' /}
+	#{get 'inlineScripts' /}
+
+	<!--{mixpanel /}-->
+	</body>
+</html>

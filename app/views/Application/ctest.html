@@ -1,0 +1,145 @@
+
+#{extends 'main.html' /}
+#{set title:'Canvas test' /}
+#{set 'moreScripts'}
+ #{get 'moreScripts' /}
+    <script src="@{'/p/js/modernizr.js'}"></script>
+#{/set}
+<!--
+    pg 18
+    HTML5 defines a new element called <video> for embedding video in your web pages.
+    Embedding video used to be impossible without third-party plug-ins such as Apple
+    QuickTime or Adobe Flash.  The <video> element is designed to be usable without any detection scripts. You can
+
+
+    specify multiple video files, and browsers that support HTML5 video will choose one
+    based on what video formats they support.*
+    Browsers that don’t support HTML5 video will ignore the <video> element completely
+          http://camendesign.com/code/video_for_everybody
+    function supports_video() {
+      return !!document.createElement('video').canPlayType;
+    }
+
+    The “language” of a video is called a “codec”
+     two codec:
+    one works in Safari and on the
+    iPhone. (This one also works in Adobe Flash, if you use a solution like Video for
+    Everybody!.) The other codec is free and works in open source browsers like
+    Chromium and Mozilla Firefox.
+ -->
+
+#{set 'inlineScripts'}
+	#{get 'inlineScripts' /}
+<script>
+     $(function () {
+        var html5VideoSupport = function () {
+            if (Modernizr.video) {
+              console.debug('video support') ;
+            } else {
+              console.debug('oops no video support') ;
+            }
+         }
+//      or simply
+//    if (Modernizr.canvastext) {
+//           // let's draw some text!
+//         } else {
+//           // no native canvas text support available :(
+//         }
+
+        function supports_canvas_text() {
+          if (!html5Support) { return false; }
+          var dummy_canvas = document.createElement('canvas');
+          var context = dummy_canvas.getContext('2d');
+          return typeof context.fillText == 'function';
+        }
+
+        var x = 50;
+        var y = 25;
+        var w =150;
+        var h = 100;
+
+        var createCanvas = function() {
+            console.debug(supports_canvas_text());
+            var dummyCanvas = document.createElement('canvas');
+            var context = dummyCanvas.getContext('2d');
+        }
+        //$('#drawsquare').click(function(){
+             var el = document.getElementById("c1");//$('#c1').get()
+             var elContext =  el.getContext("2d");
+             elContext.fillRect(x,y,w,h);
+//            var b_canvas = document.getElementById("c1");
+//             var b_context = b_canvas.getContext("2d");
+//             b_context.fillRect(50, 25, 150, 100);
+
+      //  })
+
+         $('#moveRght').click(function(){
+             move(x+1,y,w,h);
+         })
+
+         $('#moveLft').click(function(){
+             move(x-1,y,w,h);
+         })
+
+         $('#moveUp').click(function(){
+             move(x,y+1,w,h);
+         })
+
+         $('#moveDwn').click(function(){
+             move(x,y-1,w,h);
+         })
+
+         $(document).keypress(function (event) {
+			if (event.keyCode === 37 /*Key.left*/) {
+                move(x-10,y,w,h);
+			}
+            if (event.keyCode === 39 /*Key.right*/) {
+                move(x+10,y,w,h);
+            }
+            if (event.keyCode === 40 /*Key.up*/) {
+                move(x,y+10,w,h);
+            }
+            if (event.keyCode === 38 /*Key.dwn*/) {
+                move(x,y-10,w,h);
+            }
+		})
+         $('#drawStuff').click(function() {
+            var context = document.getElementById("c1");//$('#c1').get()
+            context.width = context.width
+            //var elContext =  context.getContext("2d");
+            context.beginPath();
+            context.moveTo(60, 0);
+            context.lineTo(60, 153);
+            context.moveTo(60, 173);
+            context.lineTo(60, 375);
+            context.moveTo(65, 370);
+            context.lineTo(60, 375);
+            context.lineTo(55, 370);
+            context.strokeStyle = "#f00";
+            context.stroke();
+         })
+
+         var drawLine = function() {
+             context.moveTo(60, 0);
+         }
+         var move = function(xparm,yparm) {
+            x = xparm;
+            y = yparm;
+            var el = document.getElementById("c1");//$('#c1').get()
+             el.width = el.width
+            var elContext =  el.getContext("2d");
+            elContext.fillRect(x,y,w,h);
+         }
+    })
+</script>
+#{/set}
+
+        <div id="container">
+            canvas test
+            <div id="drawsquare">draw</div>
+            <div id="drawStuff">drawStuff</div>
+
+            <div id="moveLft">left</div>
+            <div id="moveRght">right</div>
+            <canvas width="300" height="225" id="c1" class=""></canvas>
+        </div>

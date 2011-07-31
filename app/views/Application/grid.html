@@ -35,6 +35,8 @@
      $(function () {
 
          var players = {p1: {color:'#550000', turn: true}, p2: {color:'#000000', turn: false}};
+         // array of x y
+         var occupiedPos = new Array()
 
          var rect = { x:50,y :25,h : 100,w : 150}
          var gCanvasElement = document.getElementById('c1');
@@ -162,34 +164,73 @@
              var xOK = false;
              var yOK = false;
 
+             var xVal;
+             var yVal;
              for (var x = 0.5; x < gCanvasElement.width; x += szSq) {
+
                if(xPos > x - 10 && xPos < x + 10)  {
+                   xVal = x
                    xOK = true;
                    break;
                }
              }
+
              for (var y = 0.5; y < gCanvasElement.height; y += szSq) {
                if(yPos > y - 3 && yPos < y + 3)  {
+                   yVal = y
                    yOK = true;
                    break;
                }
              }
-             return (yOK && xOK)
+            var valid = false;
+            var message = "please click on an intersection"
+            if((yOK && xOK)) {
+                valid = true;
+
+                var jsonXY =  {xOcc:xVal, yOcc:yVal}
+
+                if(isSpaceOccupied(jsonXY) == false) {
+                    console.debug(occupiedPos.length)
+                    occupiedPos[occupiedPos.length] = jsonXY
+
+                     for(var i = 0 ; i < occupiedPos.length ; i++) {
+                        console.debug('occupiedPos ' + occupiedPos[i].xOcc + ' occupiedPos y ' + occupiedPos[i].yOcc)
+                     }
+
+                } else {
+                    valid = false
+                    message = "oops, your opponent is already occupying that space =("
+                }
+            }
+            return {valid:valid, xPos : xVal, yPos : yVal,message:message}
          }
 
+         var isSpaceOccupied = function(jsonXY) {
+             if(occupiedPos.length>0) {
+                  for(var i = 0 ; i < occupiedPos.length ; i++) {
+                      console.debug(' occupiedPos[i]  ' + i + '  '  + occupiedPos[i] + ' x ' +
+                              occupiedPos[i].xOcc  +' y ' + occupiedPos[i].yOcc + ' jsonXY  x ' + jsonXY.xOcc + ' y ' + jsonXY.yOcc )
+                      if(occupiedPos[i].xOcc == jsonXY.xOcc && occupiedPos[i].yOcc == jsonXY.yOcc) {
+                            console.debug(' space is occupied')
+                            return true;
+                        }
+                   }
+             }
+             return false;
+          }
+
          var drawMove = function(x,y,w,h) {
-             console.debug(' test p1 ' + players.p1.turn)
-             console.debug(' test p2 ' + players.p2.turn)
+
              if(players.p1.turn == 'true' || players.p1.turn == true) {
-                 console.debug('player 1 true')
-                 console.debug(' color ' + players.p1.color)
+//                 console.debug('player 1 true')
+//                 console.debug(' color ' + players.p1.color)
                  gDrawingContext.fillStyle = players.p1.color;
                  players.p1.turn = false;
                  players.p2.turn = true;
              }
              else if(players.p2.turn == 'true'  || players.p2.turn == true) {
-                 console.debug('player 2 true')
-                 console.debug(' color ' + players.p2.color)
+//                 console.debug('player 2 true')
+//                 console.debug(' color ' + players.p2.color)
                  gDrawingContext.fillStyle = players.p2.color
                  players.p2.turn = false
                  players.p1.turn = true
@@ -233,8 +274,9 @@
          function goBoardClick(e) {
             var cell = getCursorPosition(e);
           //  console.debug('board clicked! ' + cell +  'legal move ' + checkMove(cell[0],cell[1]));
-            if(checkMove(cell[0],cell[1])) {
-                drawMove(cell[0]-10,cell[1]-10,20,20)
+            var move = checkMove(cell[0],cell[1])
+            if(move.valid) {
+                drawMove(move.xPos-10,move.yPos-10,20,20)
             }
          }
 
@@ -267,12 +309,13 @@
 #{/set}
 
         <div id="container">
-            canvas test
-            <div id="drawsquare">draw</div>
-            <div id="drawStuff">drawStuff</div>
 
-            <div id="moveLft">left</div>
-            <div id="moveRght">right</div>
+            <!--<div id="drawsquare">draw</div>-->
+            <!--<div id="drawStuff">drawStuff</div>-->
+            <!--<div id="moveLft">left</div>-->
+            <!--<div id="moveRght">right</div>-->
+
+            <div id="messageBox"></div>
             <canvas width="500" height="375" id="c1" class=""></canvas>
             <!--<canvas width="500" height="375" id="c1" class=""></canvas>-->
         </div>

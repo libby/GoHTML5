@@ -34,6 +34,9 @@
 <script>
      $(function () {
 
+         var players = {p1: {color:'#550000', turn: true}, p2: {color:'#000000', turn: false}};
+
+         var rect = { x:50,y :25,h : 100,w : 150}
          var gCanvasElement = document.getElementById('c1');
          gCanvasElement.width = 500;
          gCanvasElement.height = 500;
@@ -53,7 +56,7 @@
             var context = dummyCanvas.getContext('2d');
         }
 
-        var rect = { x:50,y :25,h : 100,w : 150}
+
 
 //        };
 //        rect.x  = 50;
@@ -175,6 +178,23 @@
          }
 
          var drawMove = function(x,y,w,h) {
+             console.debug(' test p1 ' + players.p1.turn)
+             console.debug(' test p2 ' + players.p2.turn)
+             if(players.p1.turn == 'true' || players.p1.turn == true) {
+                 console.debug('player 1 true')
+                 console.debug(' color ' + players.p1.color)
+                 gDrawingContext.fillStyle = players.p1.color;
+                 players.p1.turn = false;
+                 players.p2.turn = true;
+             }
+             else if(players.p2.turn == 'true'  || players.p2.turn == true) {
+                 console.debug('player 2 true')
+                 console.debug(' color ' + players.p2.color)
+                 gDrawingContext.fillStyle = players.p2.color
+                 players.p2.turn = false
+                 players.p1.turn = true
+             }
+
              gDrawingContext.fillRect(x,y,w,h);
          }
 
@@ -212,7 +232,7 @@
 
          function goBoardClick(e) {
             var cell = getCursorPosition(e);
-            console.debug('board clicked! ' + cell +  'legal move ' + checkMove(cell[0],cell[1]));
+          //  console.debug('board clicked! ' + cell +  'legal move ' + checkMove(cell[0],cell[1]));
             if(checkMove(cell[0],cell[1])) {
                 drawMove(cell[0]-10,cell[1]-10,20,20)
             }

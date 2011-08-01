@@ -4,6 +4,7 @@
 #{set 'moreScripts'}
  #{get 'moreScripts' /}
     <script src="@{'/p/js/modernizr.js'}"></script>
+      <script src="@{'/p/js/Map.js'}"></script>
      <script src="@{'/p/js/Player.js'}"></script>
      <script src="@{'/p/js/Board.js'}"></script>
      <script src="@{'/p/js/Piece.js'}"></script>
@@ -60,21 +61,16 @@
            console.debug('board clicked' + this)
             var cell = game.board.getCursorPosition(e);
           //  console.debug('board clicked! ' + cell +  'legal move ' + checkMove(cell[0],cell[1]));
-            var move = game.checkMove(cell[0],cell[1])
-            if(move.valid) {
-                drawMove(move.xPos-10,move.yPos-10,20,20)
-            }
+           game.move(new Position(cell[0],cell[1]))
+//            var move = game.checkMove(cell[0],cell[1])
+//            if(move.valid) {
+//                game.drawMove(move.xPos-10,move.yPos-10, 20, 20)
+//            }
         }
 
         registerCanvas()
 
-         //var players = {p1: {color:'#550000', turn: true}, p2: {color:'#000000', turn: false}};
-         // array of x y   { xOcc : xVal, yOcc : yVal, player : player }
-//         var occupiedPos = new Array()
-
-
-
-        function supports_canvas_text() {
+         function supports_canvas_text() {
           if (!html5Support) { return false; }
           var dummy_canvas = document.createElement('canvas');
           var context = dummy_canvas.getContext('2d');
@@ -87,110 +83,15 @@
             var context = dummyCanvas.getContext('2d');
         }
 
-        var drawRect = function() {
-             var el = document.getElementById("c1");
-             var elContext =  el.getContext("2d");
-             elContext.fillRect(rect.x,rect.y,rect.w,rect.h);
-//            var b_canvas = document.getElementById("c1");
-//             var b_context = b_canvas.getContext("2d");
-//             b_context.fillRect(50, 25, 150, 100);
-
-        }
-
-
-//         var checkMove = function(xPos, yPos) {
-//
-//             var szSq = gCanvasElement.width / gCanvasElement.numSq;
-//             var xOK = false;
-//             var yOK = false;
-//
-//             var xVal;
-//             var yVal;
-//             for (var x = 0.5; x < gCanvasElement.width; x += szSq) {
-//
-//               if(xPos > x - 10 && xPos < x + 10)  {
-//                   xVal = x
-//                   xOK = true;
-//                   break;
-//               }
-//             }
-//
-//             for (var y = 0.5; y < gCanvasElement.height; y += szSq) {
-//               if(yPos > y - 3 && yPos < y + 3)  {
-//                   yVal = y
-//                   yOK = true;
-//                   break;
-//               }
-//             }
-//            var valid = false;
-//
-//            var message = "please click on an intersection"
-//
-//            if((yOK && xOK)) {
-//                valid = true;
-//                //var player = (players.p1.turn) ? "p1" : "p2";
-//                var player = game.p1.turn ? "p1" : "p2";
-//                var jsonXY =  { xOcc : xVal, yOcc : yVal, player : player }
-//
-//                if(isSpaceOccupied(jsonXY) == false) {
-//                    occupiedPos[occupiedPos.length] = jsonXY
-//                 } else {
-//                    valid = false
-//                    message = "oops, your opponent is already occupying that space =("
-//                }
-//            }
-//            return {valid:valid, xPos : xVal, yPos : yVal,message:message}
-//         }
-
-//         var isSpaceOccupied = function(jsonXY) {
-//             if(occupiedPos.length > 0) {
-//                  for(var i = 0 ; i < occupiedPos.length ; i++) {
+//         var isKilled = function() {
+//            // go through occupied pos for player add off set and if surrounded kill
+//              for(var i = 0 ; i < occupiedPos.length ; i++) {
 //                     if(occupiedPos[i].xOcc == jsonXY.xOcc && occupiedPos[i].yOcc == jsonXY.yOcc) {
 //                            console.debug(' space is occupied')
 //                            return true;
 //                        }
-//                   }
-//             }
-//             return false;
-//          }
-
-         var isKilled = function() {
-            // go through occupied pos for player add off set and if surrounded kill
-              for(var i = 0 ; i < occupiedPos.length ; i++) {
-                     if(occupiedPos[i].xOcc == jsonXY.xOcc && occupiedPos[i].yOcc == jsonXY.yOcc) {
-                            console.debug(' space is occupied')
-                            return true;
-                        }
-               }
-         }
-
-         var drawMove = function(x,y,w,h) {
-            if(game.p1.turn == 'true' || game.p1.turn == true) {
-                 console.debug('player 1 true')
-                 console.debug(' color ' + game.p1.color)
-                 gDrawingContext.fillStyle = game.p1.color; //players.p1.color;
-                 game.p1.turn = false;
-                 game.p2.turn = true;
-             }
-             else if(game.p2.turn == 'true' || game.p2.turn == true) {
-                 console.debug('player 2 true')
-                 console.debug(' color ' + game.p2.color)
-                 gDrawingContext.fillStyle =  game.p2.color;//players.p2.color
-                 game.p2.turn = false
-                 game.p1.turn = true
-             }
-             // draw the piece
-             gDrawingContext.fillRect(x,y,w,h);
-         }
-
-
-
-
-
- //        drawGrid(10);
-       //  drawRect();
-       //  horizontalArrow();
-        // registerCanvas();
+//               }
+//         }
     })
 </script>
 #{/set}

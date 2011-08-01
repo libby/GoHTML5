@@ -2,6 +2,7 @@ function Board(sqNum, gCanvasElement) {
 
     this.gCanvasElement = gCanvasElement
     this.sqNum = sqNum
+    this.positions = new Array();
 
     this.draw = function(sqNum) {
        var szSq = gCanvasElement.width / sqNum;
@@ -18,20 +19,8 @@ function Board(sqNum, gCanvasElement) {
          context.strokeStyle = "#444444";
          context.stroke();
      }
-//
-//     this.goBoardClick = function(e,board) {
-//           console.debug('board clicked' + this)
-//            var cell = game.board.getCursorPosition(e);
-//          //  console.debug('board clicked! ' + cell +  'legal move ' + checkMove(cell[0],cell[1]));
-//            var move = game.board.checkMove(cell[0],cell[1])
-//            if(move.valid) {
-//                drawMove(move.xPos-10,move.yPos-10,20,20)
-//            }
-//        }
 
-
-         //http://snipt.net/sayanriju/get-cursor-position-of-clicked-mouse-on-a-html5-canvas/
-        this.getCursorPosition = function(e) {
+    this.getCursorPosition = function(e) {
             var x;
             var y;
             if (e.pageX || e.pageY) {
@@ -49,8 +38,43 @@ function Board(sqNum, gCanvasElement) {
             y -= gCanvasElement.offsetTop;
 
             return [x,y]
+       }
+
+       this.move = function(position,player) {
+          console.debug('this.positions.length ' + this.positions.length)
+
+          for(var i = 0; i < this.positions.length ; i ++) {
+
+               if(this.positions[i].x == position.x && this.positions[i].y == position.y) {
+                  if(this.positions[i].occupied == true) {
+                    return {moved:false,message:'occupied'}
+                  } else {
+                      // not occupied the player can move there
+                      this.positions[i].occupied = true
+                      this.positions[i].player = player
+                      return {moved:true,pos:this.positions[i]};
+                  }
+             }
+           }
+           return {moved:false,message:'not legal'};
         }
 
+      // init positions
+      console.debug(' init boards')
+      var szSq = gCanvasElement.width / gCanvasElement.numSq;
+      console.debug(' gCanvasElement.width ' + gCanvasElement.width)
+      var indx= 0;
+      var y = 0.5
+      while( y < gCanvasElement.width) {
+          for (var x = 0.5; x < gCanvasElement.width; x += szSq) {
+               this.positions[indx] = new Position(x,y)
+               indx++
+           }
+           y = y + szSq
+      }
 
+     for(var i = 0; i < this.positions.length ; i ++ ) {
+           console.debug(' pos ' + this.positions[i].x + ' y ' + this.positions[i].y)
+      }
 
 }

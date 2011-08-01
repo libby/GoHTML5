@@ -53,7 +53,7 @@ function Board(sqNum, gCanvasElement) {
                     return {moved:false,message:'occupied'}
                   } else {
                       // not occupied, but it might be suicide
-                      if(this.isSuicideMove(position)) {
+                      if(this.isSuicideMove(position,player)) {
                           alert( ' wow that is a suicide move, you can\'t do that')
                           return {moved:false,message:'suicide'};
                       }
@@ -100,7 +100,7 @@ function Board(sqNum, gCanvasElement) {
         }
     }
 
-    this.checkIfSurrounded = function(position) {
+    this.checkIfSurrounded = function(position,player) {
        var piece = this.positionPieceMap[this.mapKey(position)]
        console.debug(' piece ' + piece)
         var player
@@ -119,8 +119,8 @@ function Board(sqNum, gCanvasElement) {
         return false
     }
 
-    this.isSuicideMove = function(position) {
-       return this.checkIfSurrounded(position)
+    this.isSuicideMove = function(position,player) {
+       return this.checkIfSurrounded(position,player)
     }
 
     this.killIt = function(position) {

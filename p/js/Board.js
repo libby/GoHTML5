@@ -3,7 +3,8 @@ function Board(sqNum, gCanvasElement) {
     this.gCanvasElement = gCanvasElement
     this.sqNum = sqNum
     this.positions = new Array();
-
+    this.positionPieceMap = new Array()
+    this.szSq = gCanvasElement.width / this.sqNum;
     this.draw = function(sqNum) {
        var szSq = gCanvasElement.width / sqNum;
        var el = document.getElementById('c1');
@@ -41,24 +42,116 @@ function Board(sqNum, gCanvasElement) {
        }
 
        this.move = function(position,player) {
-          console.debug('this.positions.length ' + this.positions.length)
-
+          //console.debug('this.positions.length ' + this.positions.length + ' this.positionPieceMap ')
+          if(this.positionPieceMap[this.mapKey(position)]) {
+              console.debug(' map -- ' + this.positionPieceMap[this.mapKey(position)].player.color)
+          }
           for(var i = 0; i < this.positions.length ; i ++) {
 
                if(this.positions[i].x == position.x && this.positions[i].y == position.y) {
                   if(this.positions[i].occupied == true) {
                     return {moved:false,message:'occupied'}
                   } else {
-                      // not occupied the player can move there
+                      // not occupied, but it might be suicide
+                      if(this.isSuicideMove(position)) {
+                          alert( ' wow that is a suicide move, you can\'t do that')
+                          return {moved:false,message:'suicide'};
+                      }
                       this.positions[i].occupied = true
                       this.positions[i].player = player
-                      return {moved:true,pos:this.positions[i]};
+                      this.positionPieceMap[this.mapKey(position)] = new Piece(this.positions[i],player)
+                      this.checkLifeLines(position,i);
+
+                      return {moved:true,pos:this.positions[i],message:'ok'};
                   }
              }
            }
-           return {moved:false,message:'not legal'};
+           return {moved:false, message:'not legal'};
         }
 
+    this.mapKey = function(position) {
+          return position.x + '' + position.y
+    }
+
+    this.checkLifeLines = function(position) {
+        //  this.positionPieceMap[this.mapKey(position)].position
+        console.debug(' top occ ' + this.positionPieceMap[this.mapKey(this.getTopLL(position))])
+        if(this.positionPieceMap[this.mapKey(this.getTopLL(position))]) {
+            //check if surrounded
+           if(this.checkIfSurrounded(this.getTopLL(position))) this.killIt(this.getTopLL(position))
+        }
+
+        console.debug('  bott occ ' + this.positionPieceMap[this.mapKey(this.getBottomLL(position))])
+         if(this.positionPieceMap[this.mapKey(this.getBottomLL(position))]) {
+            //check if surrounded
+             if(this.checkIfSurrounded(this.getBottomLL(position))) this.killIt(this.getBottomLL(position))
+        }
+
+        console.debug('left occ ' + this.positionPieceMap[this.mapKey(this.getLeftLL(position))])
+         if(this.positionPieceMap[this.mapKey(this.getLeftLL(position))]) {
+            //check if surrounded
+             if(this.checkIfSurrounded(this.getLeftLL(position))) this.killIt(this.getLeftLL(position))
+        }
+        console.debug('right occ ' + this.positionPieceMap[this.mapKey(this.getRightLL(position))])
+         if(this.positionPieceMap[this.mapKey(this.getRightLL(position))]) {
+            //check if surrounded
+             if(this.checkIfSurrounded(this.getRightLL(position))) this.killIt(this.getRightLL(position))
+        }
+    }
+
+    this.checkIfSurrounded = function(position) {
+       if(this.positionPieceMap[this.mapKey(this.getTopLL(position))] &&
+               this.positionPieceMap[this.mapKey(this.getRightLL(position))] &&
+                this.positionPieceMap[this.mapKey(this.getLeftLL(position))] &&
+                this.positionPieceMap[this.mapKey(this.getBottomLL(position))]) {
+             //surrounded kill it
+          // console.debug('surrounded kill it ' +this.positionPieceMap[this.mapKey(position)].player.color)
+           //this.positionPieceMap[this.mapKey(position)]=null
+           return true
+        }
+        return false
+    }
+
+    this.isSuicideMove = function(position) {
+       return this.checkIfSurrounded(position)
+    }
+
+    this.killIt = function(position) {
+        //gDrawingContext.fillStyle = position.player.color;
+        // draw the piece           obv don't hard code
+        gDrawingContext.clearRect(position.x - 10 , position.y - 10, 20, 20)
+        this.unSetPos(position)
+    }
+
+    this.unSetPos = function(position) {
+        for(var i = 0; i < this.positions.length ; i ++) {
+           if(this.positions[i].x == position.x && this.positions[i].y == position.y) {
+                // not occupied the player can move there
+                this.positions[i].occupied = false
+                this.positions[i].player = null
+                this.positionPieceMap[this.mapKey(position)] = null
+           }
+        }
+    }
+//    this.checkLL = functino(position) {
+//        position.x position.y +
+//    }
+    this.getTopLL = function(position) {
+        return new Position(position.x, position.y - this.szSq)
+         //this.positionPieceMap[this.mapKey(position)].position +
+    }
+
+    this.getBottomLL = function(position) {
+        return new Position(position.x, position.y + this.szSq)
+    }
+
+    this.getLeftLL = function(position) {
+         return new Position(position.x - this.szSq, position.y)
+    }
+
+    this.getRightLL = function(position) {
+        return new Position(position.x + this.szSq, position.y)
+    }
       // init positions
       console.debug(' init boards')
       var szSq = gCanvasElement.width / gCanvasElement.numSq;
@@ -73,8 +166,8 @@ function Board(sqNum, gCanvasElement) {
            y = y + szSq
       }
 
-     for(var i = 0; i < this.positions.length ; i ++ ) {
-           console.debug(' pos ' + this.positions[i].x + ' y ' + this.positions[i].y)
-      }
+//     for(var i = 0; i < this.positions.length ; i ++ ) {
+//           console.debug(' pos ' + this.positions[i].x + ' y ' + this.positions[i].y)
+//      }
 
 }

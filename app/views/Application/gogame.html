@@ -58,7 +58,7 @@
         }
 
         var goBoardClick = function(e) {
-           console.debug('board clicked' + this)
+           //console.debug('board clicked' + this)
             var cell = game.board.getCursorPosition(e);
           //  console.debug('board clicked! ' + cell +  'legal move ' + checkMove(cell[0],cell[1]));
            game.move(new Position(cell[0],cell[1]))

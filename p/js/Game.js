@@ -10,6 +10,11 @@ function Game(gCanvasElement,sqNum) {
 
     this.board = new Board(sqNum,gCanvasElement)
 
+    this.sounds = new Array();
+
+    this.sounds["place"] = 'audiotag1'
+    this.sounds["buzz"] = 'audiotag2'
+
     this.occupiedPos = new Array()
 
     this.move = function(position) {
@@ -18,6 +23,7 @@ function Game(gCanvasElement,sqNum) {
          console.debug(' move valid ' +move.valid + ' ' +move.message)
          if( move.valid == true) {
              this.drawMove(move.pos, 20, 20)
+             this.playSound(this.sounds["place"])
              if (this.currentPlayer == this.p1) {
                  this.currentPlayer = this.p2
                  this.p2.turn = true
@@ -83,6 +89,10 @@ function Game(gCanvasElement,sqNum) {
              gDrawingContext.fillRect(position.x - 10 , position.y - 10, w, h);
      }
 
+    this.playSound = function play_single_sound(id) {
+        console.debug('play sound ');
+        document.getElementById(id).play();
+    }
     // init
     this.board.draw(sqNum)
 

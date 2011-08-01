@@ -35,7 +35,7 @@
      $(function () {
 
          var players = {p1: {color:'#550000', turn: true}, p2: {color:'#000000', turn: false}};
-         // array of x y
+         // array of x y   { xOcc : xVal, yOcc : yVal, player : player }
          var occupiedPos = new Array()
 
          var rect = { x:50,y :25,h : 100,w : 150}
@@ -186,18 +186,12 @@
             var message = "please click on an intersection"
             if((yOK && xOK)) {
                 valid = true;
-
-                var jsonXY =  {xOcc:xVal, yOcc:yVal}
+                var player = (players.p1.turn) ? "p1" : "p2";
+                var jsonXY =  { xOcc : xVal, yOcc : yVal, player : player }
 
                 if(isSpaceOccupied(jsonXY) == false) {
-                    console.debug(occupiedPos.length)
                     occupiedPos[occupiedPos.length] = jsonXY
-
-                     for(var i = 0 ; i < occupiedPos.length ; i++) {
-                        console.debug('occupiedPos ' + occupiedPos[i].xOcc + ' occupiedPos y ' + occupiedPos[i].yOcc)
-                     }
-
-                } else {
+                 } else {
                     valid = false
                     message = "oops, your opponent is already occupying that space =("
                 }
@@ -205,12 +199,14 @@
             return {valid:valid, xPos : xVal, yPos : yVal,message:message}
          }
 
+         var checkIfSurrounded = function() {
+
+         }
+
          var isSpaceOccupied = function(jsonXY) {
-             if(occupiedPos.length>0) {
+             if(occupiedPos.length > 0) {
                   for(var i = 0 ; i < occupiedPos.length ; i++) {
-                      console.debug(' occupiedPos[i]  ' + i + '  '  + occupiedPos[i] + ' x ' +
-                              occupiedPos[i].xOcc  +' y ' + occupiedPos[i].yOcc + ' jsonXY  x ' + jsonXY.xOcc + ' y ' + jsonXY.yOcc )
-                      if(occupiedPos[i].xOcc == jsonXY.xOcc && occupiedPos[i].yOcc == jsonXY.yOcc) {
+                     if(occupiedPos[i].xOcc == jsonXY.xOcc && occupiedPos[i].yOcc == jsonXY.yOcc) {
                             console.debug(' space is occupied')
                             return true;
                         }
@@ -218,6 +214,16 @@
              }
              return false;
           }
+
+         var isKilled = function() {
+            // go through occupied pos for player add off set and if surrounded kill
+              for(var i = 0 ; i < occupiedPos.length ; i++) {
+                     if(occupiedPos[i].xOcc == jsonXY.xOcc && occupiedPos[i].yOcc == jsonXY.yOcc) {
+                            console.debug(' space is occupied')
+                            return true;
+                        }
+               }
+         }
 
          var drawMove = function(x,y,w,h) {
 

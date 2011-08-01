@@ -16,7 +16,11 @@ object Application extends Controller {
          Template
     }
 
-      def grid = {
+    def grid = {
+         Template
+    }
+
+    def goGame = {
          Template
     }
     

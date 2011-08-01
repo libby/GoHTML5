@@ -10,6 +10,8 @@ GET     /ctest                                       Application.ctest
 
 GET     /grid                                       Application.grid
 
+GET     /gogame                                       Application.goGame
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 

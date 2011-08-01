@@ -93,7 +93,7 @@
       <file leaf-file-name="Board.js" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/p/js/Board.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="54" column="62" selection-start="2109" selection-end="2109" vertical-scroll-proportion="0.58678955">
+            <state line="112" column="161" selection-start="5258" selection-end="5258" vertical-scroll-proportion="0.54070663">
               <folding />
             </state>
           </provider>
@@ -686,13 +686,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/p/js/Piece.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="24" selection-start="154" selection-end="160" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/views/Application/gogame.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="60" column="13" selection-start="2347" selection-end="2347" vertical-scroll-proportion="-18.0">
@@ -707,9 +700,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/p/js/Piece.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="24" selection-start="154" selection-end="160" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/p/js/Board.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="62" selection-start="2109" selection-end="2109" vertical-scroll-proportion="0.58678955">
+        <state line="112" column="161" selection-start="5258" selection-end="5258" vertical-scroll-proportion="0.54070663">
           <folding />
         </state>
       </provider>

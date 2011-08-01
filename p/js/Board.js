@@ -59,7 +59,8 @@ function Board(sqNum, gCanvasElement) {
                       }
                       this.positions[i].occupied = true
                       this.positions[i].player = player
-                      this.positionPieceMap[this.mapKey(position)] = new Piece(this.positions[i],player)
+                      console.debug(' set player ' + player.color)
+                      this.positionPieceMap[this.mapKey(position)] = new Piece(this.positions[i], player)
                       this.checkLifeLines(position,i);
 
                       return {moved:true,pos:this.positions[i],message:'ok'};
@@ -100,10 +101,16 @@ function Board(sqNum, gCanvasElement) {
     }
 
     this.checkIfSurrounded = function(position) {
-       if(this.positionPieceMap[this.mapKey(this.getTopLL(position))] &&
-               this.positionPieceMap[this.mapKey(this.getRightLL(position))] &&
-                this.positionPieceMap[this.mapKey(this.getLeftLL(position))] &&
-                this.positionPieceMap[this.mapKey(this.getBottomLL(position))]) {
+       var piece = this.positionPieceMap[this.mapKey(position)]
+       console.debug(' piece ' + piece)
+        var player
+        if (piece) {
+            player = piece.player
+        }
+       if(this.positionPieceMap[this.mapKey(this.getTopLL(position))] && this.positionPieceMap[this.mapKey(this.getTopLL(position))].player != player &&
+               this.positionPieceMap[this.mapKey(this.getRightLL(position))] && this.positionPieceMap[this.mapKey(this.getRightLL(position))].player != player &&
+                this.positionPieceMap[this.mapKey(this.getLeftLL(position))] && this.positionPieceMap[this.mapKey(this.getLeftLL(position))].player != player &&
+                this.positionPieceMap[this.mapKey(this.getBottomLL(position))] && this.positionPieceMap[this.mapKey(this.getBottomLL(position))].player != player) {
              //surrounded kill it
           // console.debug('surrounded kill it ' +this.positionPieceMap[this.mapKey(position)].player.color)
            //this.positionPieceMap[this.mapKey(position)]=null

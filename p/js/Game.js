@@ -2,7 +2,7 @@ function Game(gCanvasElement,sqNum) {
 
     this.gCanvasElement = gCanvasElement
 
-    this.p1 = new Player('#FF0000', 1, true)
+    this.p1 = new Player('#FFFFFF', 1, true)
 
     this.p2 = new Player('#000000', 1, false)
 

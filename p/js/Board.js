@@ -119,6 +119,7 @@ function Board(sqNum, gCanvasElement) {
         return false
     }
 
+    // the player is moving to a square where they going to kill themselves
     this.isSuicideMove = function(position,player) {
        return this.checkIfSurrounded(position,player)
     }

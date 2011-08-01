@@ -23,5 +23,9 @@ object Application extends Controller {
     def goGame = {
          Template
     }
+
+    def go = {
+         Template
+    }
     
 }

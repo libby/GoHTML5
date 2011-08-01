@@ -12,6 +12,8 @@ GET     /grid                                       Application.grid
 
 GET     /gogame                                       Application.goGame
 
+GET     /go                                       Application.go
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
